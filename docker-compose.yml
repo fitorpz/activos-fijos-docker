@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: activos_fijos
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+
+  backend:
+    build: ./backend
+    working_dir: /usr/src/app
+    ports:
+      - "3001:3001"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_DATABASE: activos_fijos
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend:/usr/src/app
+    command: npm run start:dev
+    networks:
+      - app-network
+
+  frontend:
+    build: ./frontend
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+    stdin_open: true
+    tty: true
+    command: npm start
+    networks:
+      - app-network
+
+volumes:
+  db-data:
+
+networks:
+  app-network:
