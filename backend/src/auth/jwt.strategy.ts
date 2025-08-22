@@ -9,11 +9,17 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            secretOrKey: jwtConstants.secret,
+            secretOrKey: jwtConstants.secret, // asegúrate que esto coincida con el .sign()
         });
     }
 
     async validate(payload: any) {
-        return { id: payload.sub, correo: payload.correo, rol: payload.rol };
+        console.log('✅ payload recibido:', payload); // <-- IMPORTANTE PARA DEPURAR
+
+        return {
+            id: payload.sub,
+            correo: payload.correo,
+            rol: payload.rol,
+        };
     }
 }

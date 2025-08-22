@@ -3,6 +3,7 @@ import {
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
+    DeleteDateColumn,
     ManyToOne,
     JoinColumn,
 } from 'typeorm';
@@ -40,4 +41,9 @@ export class Usuario {
 
     @CreateDateColumn()
     creadoEn: Date;
+    
+    @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp', nullable: true })
+    deletedAt: Date | null; // 👈 Agrega "| null"
+
+
 }

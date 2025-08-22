@@ -86,7 +86,7 @@ const Dashboard = () => {
 
     return (
         <>
-            
+
 
             {/* Panel principal */}
             <div className="container mt-4">
@@ -102,11 +102,18 @@ const Dashboard = () => {
                                     <ul className="list-unstyled">
                                         {cat.items.map((item, i) => (
                                             <li key={i}>
-                                                <a href="#" className="text-decoration-none">
+                                                <button
+                                                    className="btn btn-link text-decoration-none p-0"
+                                                    onClick={() => {
+                                                        if (item === 'Edificios') navigate('/edificios');
+                                                        // Agrega más rutas aquí si quieres para 'Tierras y Terrenos', etc.
+                                                    }}
+                                                >
                                                     <i className="bi bi-chevron-right me-2"></i> {item}
-                                                </a>
+                                                </button>
                                             </li>
                                         ))}
+
                                     </ul>
                                 </div>
                             </div>

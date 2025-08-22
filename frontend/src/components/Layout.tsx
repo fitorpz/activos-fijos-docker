@@ -13,7 +13,7 @@ const Layout = () => {
         <>
             {/* Menú superior */}
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-4">
-                <a className="navbar-brand fw-bold text-warning" href="#">
+                <a className="navbar-brand fw-bold text-warning" href="/dashboard">
                     Sistema de Activos Fijos
                 </a>
 
@@ -32,7 +32,13 @@ const Layout = () => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <a className="nav-link" href="#">
+                            <a className="nav-link" href="/parametros">
+                                <i className="bi bi-gear-fill"></i> Parámetros
+                            </a>
+                        </li>
+
+                        <li className="nav-item">
+                            <a className="nav-link" href="/dashboard">
                                 <i className="bi bi-box-seam"></i> Activos Fijos
                             </a>
                         </li>

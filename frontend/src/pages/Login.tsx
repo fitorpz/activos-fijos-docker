@@ -1,23 +1,19 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [correo, setCorreo] = useState('');
     const [contrasena, setContrasena] = useState('');
     const [errores, setErrores] = useState<string[]>([]);
-    const navigate = useNavigate();
 
     const validarCampos = () => {
         const erroresTemp: string[] = [];
 
-        // Validación de correo
         if (!correo) {
             erroresTemp.push('El correo es obligatorio.');
         } else if (!/\S+@\S+\.\S+/.test(correo)) {
             erroresTemp.push('El correo no tiene un formato válido.');
         }
 
-        // Validación de contraseña
         if (!contrasena) {
             erroresTemp.push('La contraseña es obligatoria.');
         }
@@ -41,27 +37,26 @@ const Login = () => {
             });
 
             const data = await response.json();
+            console.log('Respuesta login:', data); // ✅ Depuración
 
-            if (!response.ok) {
+            // Verifica si hay error
+            if (!response.ok || !data.access_token || !data.usuario) {
                 setErrores([data.message || 'Credenciales incorrectas.']);
                 return;
             }
 
-            // ✅ GUARDAMOS EL TOKEN JWT
-            localStorage.setItem('auth', 'true');
-            window.dispatchEvent(new Event('storage')); // 👈 fuerza re-render
-
-            // Guardar usuario opcionalmente
+            // ✅ Guardar token y datos del usuario en localStorage
+            localStorage.setItem('token', data.access_token);
             localStorage.setItem('usuario', JSON.stringify(data.usuario));
 
-            // Redirigir al dashboard
-            navigate('/dashboard');
+            // ✅ Redireccionar al dashboard (forzar recarga para que detecte token)
+            window.location.href = '/dashboard';
+
         } catch (error) {
+            console.error('Error en login:', error);
             setErrores(['Error al conectar con el servidor.']);
         }
     };
-
-
 
 
     return (
@@ -113,14 +108,12 @@ const Login = () => {
                     <small className="d-block mb-1 text-muted">
                         ¿Primera vez? <a href="/primera-vez">Solicite su cuenta</a>
                     </small>
-
                     <small className="d-block mb-1 text-muted">
                         ¿Olvidaste tu contraseña? <a href="/recuperar">Recupérala</a>
                     </small>
                     <small className="d-block text-danger">
                         ¿Tu cuenta está deshabilitada? <a href="/deshabilitada">Solicita reactivación</a>
                     </small>
-
                 </div>
             </div>
         </div>

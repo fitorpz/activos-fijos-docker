@@ -2,6 +2,7 @@ import { Controller, Post, Body, Req, UnauthorizedException } from '@nestjs/comm
 import { AuthService } from './auth.service';
 import { UserLogService } from '../user-log/user-log.service';
 import type { Request } from 'express';
+import { LoginUsuarioDto } from './dto/login-usuario.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -12,7 +13,7 @@ export class AuthController {
 
     @Post('login')
     async login(
-        @Body() body: { correo: string; contrasena: string },
+        @Body() body: LoginUsuarioDto,
         @Req() request: Request,
     ) {
         try {
@@ -34,7 +35,7 @@ export class AuthController {
 
             return {
                 message: 'Login exitoso',
-                access_token: tokenResult.access_token, // ✅ CAMBIO CLAVE AQUÍ
+                access_token: tokenResult.access_token,
                 usuario: {
                     id: usuario.id,
                     correo: usuario.correo,
